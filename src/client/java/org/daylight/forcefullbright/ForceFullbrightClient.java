@@ -24,12 +24,13 @@ public class ForceFullbrightClient implements ClientModInitializer {
             dispatcher.register(ClientCommandManager.literal("forceFullbright")
                 .executes(context -> {
                     BrightnessState.toggleState();
+                    MinecraftClient.getInstance().worldRenderer.reload();
 
                     MinecraftClient mc = MinecraftClient.getInstance();
                     if(mc != null && mc.player != null) mc.player.sendMessage(
                             Text.literal(BrightnessState.isEnabled() ?
-                                    "§a§lEnabled§f fullbright" :
-                                    "§6§lDisabled§r fullbright"), false
+                                    "§a§lEnabled§f Forced Fullbright" :
+                                    "§6§lDisabled§r Forced Fullbright"), false
                     );
                     return 1;
                 })

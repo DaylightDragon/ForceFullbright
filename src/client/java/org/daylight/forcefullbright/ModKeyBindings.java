@@ -2,6 +2,7 @@ package org.daylight.forcefullbright;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.Window;
@@ -35,6 +36,7 @@ public class ModKeyBindings {
 
                     if (down && !prevToggleFullbrightDown) {
                         BrightnessState.toggleState();
+                        MinecraftClient.getInstance().worldRenderer.reload();
                     }
                     prevToggleFullbrightDown = down;
                 }

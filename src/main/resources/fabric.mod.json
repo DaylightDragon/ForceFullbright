@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "forcefullbright",
 	"version": "${version}",
-	"name": "Chat Utils",
+	"name": "Force Fullbright",
 	"description": "Forced Fullbright with uniform lighting. Toggle with /forceFullbright or a keybind.",
 	"authors": [
 		"Daylight"
