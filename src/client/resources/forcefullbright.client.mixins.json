@@ -3,6 +3,7 @@
   "package": "org.daylight.forcefullbright.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "EntityRendererMixin",
     "EntityRenderManagerMixin",
     "WorldRendererMixin"
   ],

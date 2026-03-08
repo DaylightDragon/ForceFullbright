@@ -10,26 +10,21 @@ import org.daylight.forcefullbright.BrightnessState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(EntityRenderManager.class)
+@Mixin(value = EntityRenderManager.class, priority = 3000)
 public class EntityRenderManagerMixin {
-    @Inject(
+    @ModifyVariable(
             method = "Lnet/minecraft/client/render/entity/EntityRenderManager;render(Lnet/minecraft/client/render/entity/state/EntityRenderState;Lnet/minecraft/client/render/state/CameraRenderState;DDDLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/command/OrderedRenderCommandQueue;)V",
-            at = @At("HEAD")
+            at = @At("HEAD"),
+            argsOnly = true,
+            ordinal = 0
     )
-    private <S extends EntityRenderState> void setFullBright(
-            S renderState,
-            CameraRenderState cameraState,
-            double offsetX,
-            double offsetY,
-            double offsetZ,
-            MatrixStack matrices,
-            OrderedRenderCommandQueue queue,
-            CallbackInfo ci
-    ) {
-        if(BrightnessState.isEnabled()) renderState.light = 15728880;
+    private EntityRenderState modifyRenderState(EntityRenderState state) {
+        if (BrightnessState.isEnabled()) state.light = 15728880;
+        return state;
     }
 
     @Inject(
