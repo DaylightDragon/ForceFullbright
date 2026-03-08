@@ -1,4 +1,4 @@
 {
-  "key.category.catify.main_category": "Force Fullbright",
-  "key.catify.change_screen_whitelist_state": "Toggle Fullbright/Gamma"
+  "key.category.forcefullbright.main_category": "Force Fullbright",
+  "key.forcefullbright.toggle_fullbright": "Toggle Fullbright/Gamma"
 }
