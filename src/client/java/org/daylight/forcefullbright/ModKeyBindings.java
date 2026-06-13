@@ -1,26 +1,26 @@
 package org.daylight.forcefullbright;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.Window;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
 
 public class ModKeyBindings {
-    private static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of(ForceFullbright.MOD_ID, "main_category"));
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(ForceFullbright.MOD_ID, "main_category"));
 
-    public static KeyBinding TOGGLE_FULLBRIGHT;
+    public static KeyMapping TOGGLE_FULLBRIGHT;
 
     public static boolean prevToggleFullbrightDown = false;
 
     public static void register() {
-        TOGGLE_FULLBRIGHT = KeyBindingHelper.registerKeyBinding(
-                new KeyBinding(
+        TOGGLE_FULLBRIGHT = KeyMappingHelper.registerKeyMapping(
+                new KeyMapping(
                         "key." + ForceFullbright.MOD_ID + ".toggle_fullbright",
-                        InputUtil.Type.KEYSYM,
-                        InputUtil.UNKNOWN_KEY.getCode(),
+                        InputConstants.Type.KEYSYM,
+                        InputConstants.UNKNOWN.getValue(),
                         CATEGORY
                 )
         );
@@ -29,14 +29,14 @@ public class ModKeyBindings {
             if (client == null || client.getWindow() == null) return;
             Window window = client.getWindow();
 
-            InputUtil.Key whitelistScreenKey = KeyBindingHelper.getBoundKeyOf(TOGGLE_FULLBRIGHT);
-            if (whitelistScreenKey.getCategory() == InputUtil.Type.KEYSYM) {
-                if(whitelistScreenKey.getCode() != -1) {
-                    boolean down = InputUtil.isKeyPressed(window, whitelistScreenKey.getCode());
+            InputConstants.Key whitelistScreenKey = KeyMappingHelper.getBoundKeyOf(TOGGLE_FULLBRIGHT);
+            if (whitelistScreenKey.getType() == InputConstants.Type.KEYSYM) {
+                if(whitelistScreenKey.getValue() != -1) {
+                    boolean down = InputConstants.isKeyDown(window, whitelistScreenKey.getValue());
 
                     if (down && !prevToggleFullbrightDown) {
                         BrightnessState.toggleState();
-                        MinecraftClient.getInstance().worldRenderer.reload();
+                        Minecraft.getInstance().levelRenderer.allChanged();
                     }
                     prevToggleFullbrightDown = down;
                 }

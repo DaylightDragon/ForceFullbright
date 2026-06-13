@@ -6,10 +6,10 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 @Environment(EnvType.CLIENT)
 public class ForceFullbrightClient implements ClientModInitializer {
@@ -21,16 +21,16 @@ public class ForceFullbrightClient implements ClientModInitializer {
 
 	private void registerCommands() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("forceFullbright")
+            dispatcher.register(ClientCommands.literal("forceFullbright")
                 .executes(context -> {
                     BrightnessState.toggleState();
-                    MinecraftClient.getInstance().worldRenderer.reload();
+                    Minecraft.getInstance().levelRenderer.allChanged();
 
-                    MinecraftClient mc = MinecraftClient.getInstance();
-                    if(mc != null && mc.player != null) mc.player.sendMessage(
-                            Text.literal(BrightnessState.isEnabled() ?
+                    Minecraft mc = Minecraft.getInstance();
+                    if(mc != null && mc.player != null) mc.player.sendSystemMessage(
+                            Component.literal(BrightnessState.isEnabled() ?
                                     "§a§lEnabled§f Forced Fullbright" :
-                                    "§6§lDisabled§r Forced Fullbright"), false
+                                    "§6§lDisabled§r Forced Fullbright")
                     );
                     return 1;
                 })
